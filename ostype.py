@@ -1,0 +1,10 @@
+import os
+print os.listdir("C:\Users\Vasim\Desktop\GITHUB")
+print os.getcwd()
+os.system("mkdir test")
+os.chdir(os.path.join(os.getcwd(), 'test'))
+print os.getcwd()
+os.system("copy NUL vasim.txt")
+os.system("echo my line new >> vasim.txt")
+os.system("netstat -a -p >> vasim.txt")
+os.system("dir >> vasim.txt")
