@@ -1,5 +1,6 @@
 import glob
 import os
+# only one dir
 for filename in glob.glob('C:\Users\Vasim\Desktop\GITHUB\*py'):
     print filename
     dbname = os.path.splitext(os.path.basename(filename))[0]
