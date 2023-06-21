@@ -1,0 +1,40 @@
+import hcl2
+import json
+
+def convert_tf_to_cft(tf_file, cft_file):
+    with open(tf_file, 'r') as file:
+        tf_content = file.read()
+
+    tf_data = hcl2.loads(tf_content)
+
+    # Initialize an empty CloudFormation template dictionary
+    cft_template = {
+        'AWSTemplateFormatVersion': '2010-09-09',
+        'Resources': {}
+    }
+
+    # Iterate through each Terraform resource block
+    for resource in tf_data.get('resource', []):
+        resource_type = list(resource.keys())[0]
+        resource_name = resource[resource_type].get('aws_instance')
+
+        # Convert the Terraform resource properties to CloudFormation format
+        cft_properties = {
+            'Type': resource_type,
+            'Properties': resource[resource_type]
+        }
+
+        # Add the CloudFormation resource to the template
+        cft_template['Resources'][resource_name] = cft_properties
+
+    # Convert the CloudFormation template dictionary to JSON format
+    cft_json = json.dumps(cft_template, indent=4)
+
+    # Write the CloudFormation template to a file
+    with open(cft_file, 'w') as file:
+        file.write(cft_json)
+
+# Usage
+terraform_file = 'terraform.tf'
+cloudformation_file = 'cloudformation.cft'
+convert_tf_to_cft(terraform_file, cloudformation_file)
